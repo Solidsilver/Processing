@@ -191,7 +191,7 @@ def get_demo_point(geojson):
         if best_tile:
             envelope = mercantile.bounds(best_tile.x, best_tile.y, best_tile.z)
         for tile in mercantile.tiles(
-            envelope[0], envelope[1], envelope[2], envelope[3], [zoom]
+            envelope[1], envelope[0], envelope[3], envelope[2], [zoom]
         ):
             tile_bounds = mercantile.bounds(tile.x, tile.y, tile.z)
             tile_features = [i for i in spatial_index.intersection(tile_bounds)]
@@ -306,11 +306,11 @@ def get_area_acres(geometry):
     geom_aea = transform(
         partial(
             pyproj.transform,
-            pyproj.Proj(init="EPSG:4326"),
+            pyproj.Proj("EPSG:4326"),
             pyproj.Proj(
                 proj="aea",
-                lat1=shapely_geometry.bounds[1],
-                lat2=shapely_geometry.bounds[3],
+                lat_1=shapely_geometry.bounds[0],
+                lat_2=shapely_geometry.bounds[2],
             ),
         ),
         shapely_geometry,
