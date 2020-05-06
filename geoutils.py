@@ -303,16 +303,30 @@ def get_area_acres(geometry):
     """
 
     shapely_geometry = shape(geometry)
-    geom_aea = transform(
-        partial(
-            pyproj.transform,
-            pyproj.Proj("EPSG:4326"),
-            pyproj.Proj(
-                proj="aea",
-                lat_1=shapely_geometry.bounds[0],
-                lat_2=shapely_geometry.bounds[2],
+    try:
+        geom_aea = transform(
+            partial(
+                pyproj.transform,
+                pyproj.Proj("EPSG:4326"),
+                pyproj.Proj(
+                    proj="aea",
+                    lat_1=shapely_geometry.bounds[0],
+                    lat_2=shapely_geometry.bounds[2],
+                ),
             ),
-        ),
-        shapely_geometry,
-    )
+            shapely_geometry,
+        )
+    except:
+        geom_aea = transform(
+            partial(
+                pyproj.transform,
+                pyproj.Proj("EPSG:4326"),
+                pyproj.Proj(
+                    proj="aea",
+                    lat_1=shapely_geometry.bounds[1],
+                    lat_2=shapely_geometry.bounds[3],
+                ),
+            ),
+            shapely_geometry,
+        )
     return round(geom_aea.area / 4046.8564224)
