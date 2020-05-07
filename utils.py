@@ -49,7 +49,7 @@ def read_json(path):
 def write_json(path, data):
     with open(path, "w") as jsonfile:
         jsonfile.write(
-            ujson.dumps(data, escape_forward_slashes=False, double_precision=5)
+            ujson.dumps(data, escape_forward_slashes=False)
         )
 
 
